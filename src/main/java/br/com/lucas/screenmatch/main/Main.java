@@ -1,13 +1,17 @@
 package br.com.lucas.screenmatch.main;
 
+import br.com.lucas.screenmatch.model.DataEpisode;
 import br.com.lucas.screenmatch.model.DataSeason;
 import br.com.lucas.screenmatch.model.DataSeries;
+import br.com.lucas.screenmatch.model.Episode;
 import br.com.lucas.screenmatch.service.ConsumptionApi;
 import br.com.lucas.screenmatch.service.ConvertsData;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 public class Main {
 
@@ -31,5 +35,26 @@ public class Main {
             seasons.add(dataSeason);
         }
         seasons.forEach(System.out::println);
+
+        seasons.forEach(t -> t.episodes().forEach(e -> System.out.println(e.title())));
+
+        List<DataEpisode> dataEpisodes = seasons.stream()
+                .flatMap(t -> t.episodes().stream())
+                .collect(Collectors.toList());
+
+        System.out.println("\n Top 5 episodes ");
+        dataEpisodes
+                .stream()
+                .filter(e -> !e.rating().equalsIgnoreCase("N/A"))
+                .sorted(Comparator.comparing(DataEpisode::rating).reversed())
+                .limit(5)
+                .forEach(System.out::println);
+
+        List<Episode> episodes = seasons.stream()
+                .flatMap(t -> t.episodes().stream()
+                        .map(d -> new Episode(t.number(), d)))
+                .collect(Collectors.toList());
+
+        episodes.forEach(System.out::println);
     }
 }
