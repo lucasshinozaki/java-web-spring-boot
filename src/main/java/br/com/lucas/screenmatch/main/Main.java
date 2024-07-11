@@ -7,6 +7,8 @@ import br.com.lucas.screenmatch.model.Episode;
 import br.com.lucas.screenmatch.service.ConsumptionApi;
 import br.com.lucas.screenmatch.service.ConvertsData;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -56,5 +58,19 @@ public class Main {
                 .collect(Collectors.toList());
 
         episodes.forEach(System.out::println);
+
+        System.out.println("What year do you want to watch the episodes from ?");
+        var year = reading.nextInt();
+        reading.nextLine();
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        LocalDate dateSearch = LocalDate.of(year, 1, 1);
+        episodes.stream()
+                .filter(e -> e.getDateRelease() != null && e.getDateRelease().isAfter(dateSearch))
+                .forEach(e -> System.out.println(
+                        "Season: " + e.getSeason() +
+                                "  Episode: " + e.getTitle() +
+                                "  Date Release: " + e.getDateRelease().format(formatter)
+                ));
     }
 }
