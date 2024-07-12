@@ -9,10 +9,7 @@ import br.com.lucas.screenmatch.service.ConvertsData;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class Main {
@@ -58,6 +55,18 @@ public class Main {
                 .collect(Collectors.toList());
 
         episodes.forEach(System.out::println);
+        System.out.println("Enter an excerpt from an episode title ? ");
+        var titleExcerpt = reading.nextLine();
+        Optional<Episode> episodeSearched = episodes.stream()
+                .filter(e -> e.getTitle().toUpperCase().contains(titleExcerpt.toUpperCase()))
+                .findFirst();
+
+        if (episodeSearched.isPresent()) {
+            System.out.println("Episode found");
+            System.out.println("Season: " + episodeSearched.get().getSeason());
+        } else {
+            System.out.println("Episode not found");
+        }
 
         System.out.println("What year do you want to watch the episodes from ?");
         var year = reading.nextInt();
