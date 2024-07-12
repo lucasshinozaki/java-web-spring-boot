@@ -81,5 +81,20 @@ public class Main {
                                 "  Episode: " + e.getTitle() +
                                 "  Date Release: " + e.getDateRelease().format(formatter)
                 ));
+
+        Map<Integer, Double> seasonsRating = episodes.stream()
+                .filter(e -> e.getRating() > 0.0)
+                .collect(Collectors.groupingBy(Episode::getSeason,
+                        Collectors.averagingDouble(Episode::getRating)));
+        System.out.println(seasonsRating);
+
+        DoubleSummaryStatistics est = episodes.stream()
+                .filter(e -> e.getRating() > 0.0)
+                .collect(Collectors.summarizingDouble(Episode::getRating));
+
+        System.out.println("Average: " + est.getAverage());
+        System.out.println("Best Episode: " + est.getMax());
+        System.out.println("Worst Episode; " + est.getMin());
+        System.out.println("Amount: " + est.getCount());
     }
 }
