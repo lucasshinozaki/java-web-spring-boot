@@ -2,12 +2,15 @@ package br.com.lucas.screenmatch.main;
 
 import br.com.lucas.screenmatch.model.DataSeason;
 import br.com.lucas.screenmatch.model.DataSeries;
+import br.com.lucas.screenmatch.model.Series;
 import br.com.lucas.screenmatch.service.ConsumptionApi;
 import br.com.lucas.screenmatch.service.ConvertsData;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 public class Main {
 
@@ -54,7 +57,14 @@ public class Main {
     }
 
     private void listSearchedSeries() {
-        dataSeries.forEach(System.out::println);
+        List<Series> series = new ArrayList<>();
+        series = dataSeries.stream()
+                        .map(d -> new Series(d))
+                                .collect(Collectors.toList());
+        series.stream()
+                        .sorted(Comparator.comparing(Series::getGenre))
+                                .forEach(System.out::println);
+
     }
 
     private void searchWebSeries() {
