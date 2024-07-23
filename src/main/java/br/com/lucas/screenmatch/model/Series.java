@@ -1,5 +1,7 @@
 package br.com.lucas.screenmatch.model;
 
+import br.com.lucas.screenmatch.service.ConsultationChatGPT;
+
 import java.util.OptionalDouble;
 
 public class Series {
@@ -19,7 +21,7 @@ public class Series {
         this.actors = dataSeries.actors();
         this.poster = dataSeries.poster();
         this.synopsis = dataSeries.synopsis();
-
+        //this.synopsis = ConsultationChatGPT.getTranslation(dataSeries.synopsis()).trim();
     }
 
     @Override
